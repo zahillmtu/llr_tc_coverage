@@ -10,6 +10,11 @@ TO RUN:
     Run the script using python 2.7 and select the root directory from
     the pop up window. The script will traverse the root directory and
     all subdirectories beneath it to check the LLR requirements.
+
+OUTOUT:
+    The results will be saved in two files which will contain the same
+    results but in different file formats. The files are 'results.log'
+    and 'results.csv'
 """
 
 __author__  = "Zachary Hill"
