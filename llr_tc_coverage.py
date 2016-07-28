@@ -8,11 +8,13 @@ __email__   = "zachary.hill@psware.com"
 import os # needed for the os.walk function
 import re
 import sys
+import csv
 
 from Tkinter import Tk
 from tkFileDialog import askdirectory
 
 RES_FILE = './results.log'
+CSV_FILE = './results.csv'
 
 def find_require_ln(fileName):
     """Method to find the line number of the location of 'REQUIREMENTS'
@@ -43,6 +45,7 @@ def find_requirements(fileName, fullFileName):
 
     # Find all requirements
     print('\t%s' % fileName)
+    requires = []
     k = 0
     checked_second = False
     while(True):
@@ -50,6 +53,10 @@ def find_requirements(fileName, fullFileName):
         m1 = re.search('IMMC_LLR_[0-9]+', str(data[require_ln + k]))
         if m1:
             print('\t\t%s' % m1.group(0))
+            if (len(requires) != 0):
+                requires.append('\n' + m1.group(0))
+            else:
+                requires.append(m1.group(0))
             k = k + 1
         else:
             # Found no more requirements
@@ -64,6 +71,13 @@ def find_requirements(fileName, fullFileName):
                 continue
             break
 
+    s = ''.join(requires)
+
+    # write the requirements to the csv file
+    with open(CSV_FILE, 'ab') as csvfile:
+        req_writer = csv.writer(csvfile, delimiter=',')
+        req_writer.writerow([fileName, s])
+
 
 def main():
     """Script designed to determine if all modified LLRs
@@ -76,6 +90,11 @@ def main():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
     rootDir = askdirectory() # show an "Open" dialog box and return the path to the selected file
     print('Head of tree travesal selected %s' % rootDir)
+
+    # Write Column names
+    with open(CSV_FILE, 'wb') as csvfile:
+        req_writer = csv.writer(csvfile, delimiter=',')
+        req_writer.writerow(['Test Case', 'Requirements Covered'])
 
     # Traverse the tree
     for dirName, subdirList, fileList in os.walk(rootDir):
