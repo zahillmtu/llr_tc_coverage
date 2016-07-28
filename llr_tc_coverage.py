@@ -1,5 +1,15 @@
-""" Script to determine if all the LLRs that have been modified
-are covered within a Test Case.
+""" Script to list all the LLRs under the 'REQUIREMENTS'
+section of the Test Case text files.
+
+NOTE:
+    Any Test Case file that does not have requirements,
+    or if the requirements are improperly named, the
+    script will print out a notice of this.
+
+TO RUN:
+    Run the script using python 2.7 and select the root directory from
+    the pop up window. The script will traverse the root directory and
+    all subdirectories beneath it to check the LLR requirements.
 """
 
 __author__  = "Zachary Hill"
@@ -63,7 +73,7 @@ def find_requirements(fileName, fullFileName):
             # if counter is still zero then there are no requirements
             # check another line down because some may have empty line first
             if k == 1 and checked_second:
-                print('\t\tNo requirements')
+                print('\t\tNo or improper requirements')
                 break
             elif k == 0 and not checked_second:
                 k = k + 1
@@ -80,8 +90,8 @@ def find_requirements(fileName, fullFileName):
 
 
 def main():
-    """Script designed to determine if all modified LLRs
-    are covered within a test case.
+    """ Script to list all the LLRs under the 'REQUIREMENTS'
+    section of the Test Case text files.
     """
 
     # Redirect output to a file
